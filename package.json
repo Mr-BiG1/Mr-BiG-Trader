@@ -1,0 +1,15 @@
+{
+  "name": "trading-bot",
+  "version": "1.0.0",
+  "description": "for trading ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "darsan sabu geroge",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.8.2",
+    "dotenv": "^16.4.7"
+  }
+}
