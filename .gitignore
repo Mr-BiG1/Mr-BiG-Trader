@@ -138,3 +138,7 @@ dist
 .env
 .environment
 dotenv
+
+
+logs
+Logs
