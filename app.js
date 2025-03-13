@@ -7,6 +7,7 @@ const { calculateRSI } = require('./src/indicators/rsi');
 const { askOpenAI } = require('./src/api/openai');
 const { executeTrade } = require('./src/services/tradeExecutor');
 const { isMarketOpen } = require('./src/utils/marketTime');
+const { sendTelegramMessage } = require('./src/utils/telegram');
 let lastTimestamp = null;
 const run = async () => {
   console.log(`\n📅 ${new Date().toLocaleString()} — Starting run...`);
@@ -38,7 +39,7 @@ const run = async () => {
 
   console.log('📊 Stock Summary:');
   console.log(`🕒 ${data[0].timestamp} | 💹 Close: $${data[0].close} | RSI: ${rsi}`);
-
+  sendTelegramMessage(`📈 AAPL signal: *${parsed.action.toUpperCase()}* at $${data[0].close} (RSI: ${rsi})`);
   const prompt = `
 Stock: AAPL
 Time: ${data[0].timestamp}
