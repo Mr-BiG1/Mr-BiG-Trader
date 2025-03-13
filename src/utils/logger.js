@@ -4,7 +4,7 @@ const path = require('path');
 function logTrade({ action, symbol, price, qty, reason, confidence, status }) {
   const timestamp = new Date().toISOString();
 
-  // 1. Log to human-readable TXT file
+  //  Human-readable text log
   const logEntry = `
 [${timestamp}]
 Action: ${action.toUpperCase()}
@@ -19,7 +19,7 @@ Order Status: ${status}
   const txtPath = path.join(__dirname, '../../logs/trade-log.txt');
   fs.appendFileSync(txtPath, logEntry);
 
-  // 2. Log to structured JSON file (appendable array style)
+  //  Structured JSONL log
   const tradeObject = {
     timestamp,
     action: action.toUpperCase(),
@@ -31,8 +31,8 @@ Order Status: ${status}
     status
   };
 
-  const jsonPath = path.join(__dirname, '../../logs/trade-history.jsonl');
-  fs.appendFileSync(jsonPath, JSON.stringify(tradeObject) + '\n');
+  const jsonLogPath = path.join(__dirname, '../../logs/trade-history.jsonl');
+  fs.appendFileSync(jsonLogPath, JSON.stringify(tradeObject) + '\n');
 }
 
 module.exports = { logTrade };
