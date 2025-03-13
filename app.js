@@ -7,8 +7,15 @@ const { calculateRSI } = require('./src/indicators/rsi');
 const { askOpenAI } = require('./src/api/openai');
 const { executeTrade } = require('./src/services/tradeExecutor');
 const { isMarketOpen } = require('./src/utils/marketTime');
-
+let lastTimestamp = null;
 const run = async () => {
+  const currentTimestamp = data[0].timestamp;
+  if (currentTimestamp === lastTimestamp) {
+    console.log(`🔁 Same timestamp (${currentTimestamp}) — skipping...`);
+    return;
+  }
+  lastTimestamp = currentTimestamp;
+  
   if (!isMarketOpen()) {
     console.log('⏳ Market closed. Skipping.');
     return;
@@ -56,5 +63,4 @@ Based on the technical indicators above, should I buy, sell, or hold this stock?
 
 // Run every 5 minutes
 cron.schedule('*/5 * * * *', () => run());
-run(); 
-    
+run();

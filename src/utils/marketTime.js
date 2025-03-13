@@ -1,6 +1,6 @@
 function isMarketOpen() {
     const now = new Date();
-    const day = now.getUTCDay(); // 0 = Sunday, 6 = Saturday
+    const day = now.getUTCDay(); 
     const hour = now.getUTCHours();
     const minute = now.getUTCMinutes();
     const totalMinutes = hour * 60 + minute;
