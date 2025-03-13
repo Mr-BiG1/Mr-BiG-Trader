@@ -9,13 +9,15 @@ const { executeTrade } = require('./src/services/tradeExecutor');
 const { isMarketOpen } = require('./src/utils/marketTime');
 let lastTimestamp = null;
 const run = async () => {
+  console.log(`\n📅 ${new Date().toLocaleString()} — Starting run...`);
+
   const currentTimestamp = data[0].timestamp;
   if (currentTimestamp === lastTimestamp) {
     console.log(`🔁 Same timestamp (${currentTimestamp}) — skipping...`);
     return;
   }
   lastTimestamp = currentTimestamp;
-  
+
   if (!isMarketOpen()) {
     console.log('⏳ Market closed. Skipping.');
     return;
