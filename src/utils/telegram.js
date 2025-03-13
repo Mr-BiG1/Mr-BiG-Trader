@@ -1,35 +1,20 @@
-const fetch = require('node-fetch');
+const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
 
-const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+const token = process.env.TELEGRAM_BOT_TOKEN;
+const chatId = process.env.TELEGRAM_CHAT_ID;
 
-async function sendTelegramMessage(message) {
-  if (!TELEGRAM_TOKEN || !CHAT_ID) {
-    console.warn("Telegram credentials not set in .env");
+const bot = new TelegramBot(token);
+
+function sendTelegramMessage(message) {
+  if (!token || !chatId) {
+    console.error('Telegram token or chat ID missing');
     return;
   }
 
-  const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
-
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text: message,
-        parse_mode: "Markdown"
-      })
-    });
-
-    const data = await res.json();
-    if (!data.ok) {
-      console.error(" Telegram Error:", data.description);
-    }
-  } catch (error) {
-    console.error(" Telegram Send Failed:", error.message);
-  }
+  bot.sendMessage(chatId, message, { parse_mode: 'Markdown' })
+    .then(() => console.log('Telegram message sent'))
+    .catch(err => console.error('Telegram Send Failed:', err.message));
 }
 
 module.exports = { sendTelegramMessage };
