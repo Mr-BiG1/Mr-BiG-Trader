@@ -7,7 +7,7 @@ const { calculateRSI } = require('./src/indicators/rsi');
 const { askOpenAI } = require('./src/api/openai');
 const { executeTrade } = require('./src/services/tradeExecutor');
 const { isMarketOpen } = require('./src/utils/marketTime');
-const { sendTelegramMessage } = require('./src/utils/telegram');
+const { sendTelegramMessage, updateStatus } = require('./src/utils/telegram'); // ✅ added updateStatus
 
 let lastTimestamp = null;
 
@@ -65,6 +65,9 @@ Based on the technical indicators above, should I buy, sell, or hold this stock?
     await sendTelegramMessage(
       `📈 *AAPL Signal*\n🕒 *${currentTimestamp}*\n💵 *Price*: $${data[0].close}\n📊 *RSI*: ${rsi}\n✅ *Action*: ${parsed.action.toUpperCase()}\n📈 *Confidence*: ${parsed.confidence}\n📝 *Reason*: ${parsed.reason}`
     );
+
+    // Update status for /status command
+    updateStatus(`🕒 Time: ${currentTimestamp}\n💵 Price: $${data[0].close}\n📊 RSI: ${rsi}\n🤖 AI Suggests: ${parsed.action.toUpperCase()} (${parsed.confidence})\n📝 ${parsed.reason}`);
 
     // Execute Trade
     await executeTrade({ action: parsed.action, data, parsed });
