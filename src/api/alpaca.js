@@ -26,9 +26,26 @@ async function placeOrder(symbol, qty, side, type = 'market', time_in_force = 'g
     });
     return response.data;
   } catch (error) {
-    console.error(' Error placing order:', error.response?.data || error.message);
+    console.error('❌ Error placing order:', error.response?.data || error.message);
     return null;
   }
 }
 
-module.exports = { placeOrder };
+//  CHECK IF POSITION EXISTS
+async function hasPosition(symbol) {
+  try {
+    const res = await alpaca.get(`/v2/positions/${symbol}`);
+    return parseFloat(res.data.qty) > 0;
+  } catch (err) {
+    if (err.response?.status === 404) {
+      return false; 
+    }
+    console.error('❌ Error checking position:', err.response?.data || err.message);
+    return false;
+  }
+}
+
+module.exports = {
+  placeOrder,
+  hasPosition
+};
