@@ -31,3 +31,4 @@ function updateStatus(text) {
 }
 
 module.exports = { sendTelegramMessage, updateStatus };
+
